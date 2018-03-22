@@ -1,3 +1,4 @@
+const newrelic = require('newrelic');
 const express = require('express');
 const parser = require('body-parser');
 const _ = require('underscore');
@@ -15,6 +16,7 @@ const URLs = {
 app.use(parser.json());
 
 app.use(express.static(path.join(__dirname, 'dist')));
+
 app.get('/:id', (req, res) => {
   fs.readFile(path.join(__dirname, 'dist', 'template.html'), 'utf8', (err, html) => {
     const template = _.template(html);
@@ -30,12 +32,18 @@ app.get('/restaurants/:id/reviews', (req, res) => {
       res.send(response.data);
     })
     .catch((error) => {
-      res.status(error.response.status);
-      res.send(error.response.statusText);
+      if (error.response) {
+        res.status(error.response.status);
+        res.send(error.response.statusText);
+      } else {
+        res.status(500);
+        res.send('Internal Server Error');
+      }
     });
 });
 
 
 app.listen(port, () => {
+  console.log(newrelic);
   console.log(`listening on port ${port}`);
 });
