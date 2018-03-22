@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/thesilverspoon/proxy-mgb#readme",
   "dependencies": {
+    "artillery": "^1.6.0-14",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "eslint": "^4.19.1",
