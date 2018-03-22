@@ -61,25 +61,26 @@
     <div id="menu"></div>
     <div id="reviews"></div>
   </section>
-  <script type="text/javascript" src="http://abouts.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script>
-  <script type="text/javascript" src="http://restaurantsreview-env.us-west-1.elasticbeanstalk.com/bundle-prod.js"></script>
-  <script type="text/javascript" src="http://silverspoon-reservations.us-west-2.elasticbeanstalk.com/bundle-prod.js"></script>
-  <script type="text/javascript" src="http://silverspoon-menu.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script>
+  <!-- <script type="text/javascript" src="http://abouts.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
+  <!-- <script type="text/javascript" src="http://restaurantsreview-env.us-west-1.elasticbeanstalk.com/bundle-prod.js"></script> -->
+  <!-- <script type="text/javascript" src="http://silverspoon-reservations.us-west-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
+  <!-- <script type="text/javascript" src="http://silverspoon-menu.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
+  <script type="text/javascript" src="http://localhost:8081/bundle-prod.js"></script>
   <script>  
-  ReactDOM.render(
-    React.createElement(SummaryView, { id: 305 }, null),
-    document.getElementById('about')
-  );
+  // ReactDOM.render(
+  //   React.createElement(SummaryView, { id: 305 }, null),
+  //   document.getElementById('about')
+  // );
 
-  ReactDOM.render(
-    React.createElement(Reservation, { id: 305 }, null),
-    document.getElementById('reservations')
-  );
+  // ReactDOM.render(
+  //   React.createElement(Reservation, { id: 305 }, null),
+  //   document.getElementById('reservations')
+  // );
 
-  ReactDOM.render(
-    React.createElement(MenuView, { id: 305 }, null),
-    document.getElementById('menu')
-  );
+  // ReactDOM.render(
+  //   React.createElement(MenuView, { id: 305 }, null),
+  //   document.getElementById('menu')
+  // );
 
   ReactDOM.render(
     React.createElement(App, { id: 305 }, null),

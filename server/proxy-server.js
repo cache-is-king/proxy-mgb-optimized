@@ -1,20 +1,21 @@
 const express = require('express');
 const parser = require('body-parser');
-const _ =require('underscore');
+const _ = require('underscore');
 const fs = require('file-system');
+const path = require('path');
 
 const app = express();
 
 app.use(parser.json());
 
-app.use(express.static(__dirname  + '/dist'));
+app.use(express.static(path.join(__dirname, 'dist')));
 app.get('/:id', (req, res) => {
-  fs.readFile(__dirname + '/dist/template.html', 'utf8', function (err, html) {
-    var template = _.template(html);
-    var result = template({ id: req.params.id }); 
+  fs.readFile(path.join(__dirname, 'dist', 'template.html'), 'utf8', (err, html) => {
+    const template = _.template(html);
+    const result = template({ id: req.params.id });
     res.send(result);
   });
-})
+});
 const port = process.env.PORT || 5005;
 
 app.listen(port, () => {
