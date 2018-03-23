@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  </style>
   <title>silverSpoon basic</title>
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
@@ -17,7 +18,7 @@
     <div id="about"></div>
     <div id="reservations"></div>
     <div id="menu"></div>
-    <div id="reviews"></div>
+    <div id="reviews"><%= markup %></div>
   </section>
   <!-- <script type="text/javascript" src="http://abouts.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
   <!-- <script type="text/javascript" src="http://restaurantsreview-env.us-west-1.elasticbeanstalk.com/bundle-prod.js"></script> -->
@@ -26,22 +27,22 @@
   <script type="text/javascript" src="bundle-reviews.js"></script>
   <script>  
   // ReactDOM.render(
-  //   React.createElement(SummaryView, { id: 305 }, null),
+  //   React.createElement(SummaryView, { id: <%= id %> }, null),
   //   document.getElementById('about')
   // );
 
   // ReactDOM.render(
-  //   React.createElement(Reservation, { id: 305 }, null),
+  //   React.createElement(Reservation, { id: <%= id %> }, null),
   //   document.getElementById('reservations')
   // );
 
   // ReactDOM.render(
-  //   React.createElement(MenuView, { id: 305 }, null),
+  //   React.createElement(MenuView, { id: <%= id %> }, null),
   //   document.getElementById('menu')
   // );
 
-  ReactDOM.render(
-    React.createElement(App, { id: 305 }, null),
+  ReactDOM.hydrate(
+    React.createElement(App, { id: <%= id %> }, null),
     document.getElementById('reviews')
   );
   </script>

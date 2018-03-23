@@ -1,49 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style type="text/css">
-    #mainDisplay {
-      width: 1080px;
-      height: auto;
-      margin-left: auto;
-      margin-right: auto;
-      overflow: hidden;
-      background-image: url("./styles/imageb4.jpg");
-    }
-    #about {
-      margin-bottom: 20px;
-    }
-
-    #reservations {
-      margin-bottom: 20px;
-    }
-
-    #menu {
-      margin-bottom: 20px;
-      background: #fff;
-      overflow: hidden;
-      height: auto;
-      width: 1000px;
-      opacity: 0.9;
-      margin-left: 40px;
-    }
-
-    #reviews {
-      background: #fff;
-      overflow: hidden;
-      height: auto;
-      width: 1000px;
-      opacity: 0.9;
-      margin-left: 40px;
-      margin-bottom: 100px;
-      text-align: center;
-    }
-
-  </style>
   <title>silverSpoon basic</title>
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./styles/styles.css">
   <link rel="stylesheet" type="text/css" href="./styles/about.css">
   <link rel="stylesheet" type="text/css" href="./styles/reviews.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -57,25 +19,26 @@
     <div id="menu"></div>
     <div id="reviews"></div>
   </section>
-  <script type="text/javascript" src="http://abouts.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script>
-  <script type="text/javascript" src="http://restaurantsreview-env.us-west-1.elasticbeanstalk.com/bundle-prod.js"></script>
-  <script type="text/javascript" src="http://silverspoon-reservations.us-west-2.elasticbeanstalk.com/bundle-prod.js"></script>
-  <script type="text/javascript" src="http://silverspoon-menu.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script>
+  <!-- <script type="text/javascript" src="http://abouts.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
+  <!-- <script type="text/javascript" src="http://restaurantsreview-env.us-west-1.elasticbeanstalk.com/bundle-prod.js"></script> -->
+  <!-- <script type="text/javascript" src="http://silverspoon-reservations.us-west-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
+  <!-- <script type="text/javascript" src="http://silverspoon-menu.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
+  <script type="text/javascript" src="bundle-reviews.js"></script>
   <script>  
-  ReactDOM.render(
-    React.createElement(SummaryView, { id: <%= id %> }, null),
-    document.getElementById('about')
-  );
+  // ReactDOM.render(
+  //   React.createElement(SummaryView, { id: <%= id %> }, null),
+  //   document.getElementById('about')
+  // );
 
-  ReactDOM.render(
-    React.createElement(Reservation, { id: <%= id %> }, null),
-    document.getElementById('reservations')
-  );
+  // ReactDOM.render(
+  //   React.createElement(Reservation, { id: <%= id %> }, null),
+  //   document.getElementById('reservations')
+  // );
 
-  ReactDOM.render(
-    React.createElement(MenuView, { id: <%= id %> }, null),
-    document.getElementById('menu')
-  );
+  // ReactDOM.render(
+  //   React.createElement(MenuView, { id: <%= id %> }, null),
+  //   document.getElementById('menu')
+  // );
 
   ReactDOM.render(
     React.createElement(App, { id: <%= id %> }, null),
