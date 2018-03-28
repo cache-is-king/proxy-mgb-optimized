@@ -11,7 +11,7 @@ const React = require('react');
 const ReactDom = require('react-dom/server');
 const _ = require('underscore');
 
-const reviewsBundle = require('../../reviews-optimized/react/dist/bundle-render');
+const reviewsRenderBundle = require('./dist/bundle-render');
 
 dotenv.config();
 
@@ -20,10 +20,14 @@ const REDIS_LIFETIME = 60; // seconds, lifetime of redis key
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
-const redisClient = redis.createClient();
+const redisClient = redis.createClient({ host: process.env.REDIS_HOST });
 
 const URLs = {
   reviews: process.env.REVIEWS_URL,
+};
+
+const bundleFiles = {
+  'bundle-reviews.js': `${URLs.reviews}/bundle-reviews.js`,
 };
 
 const statistics = {
@@ -84,7 +88,7 @@ const server = http.createServer((req, res) => {
     redisClient.getAsync(redisKey)
       .then((redisVal) => {
         if (redisVal === null) {
-          const component = React.createElement(reviewsBundle.default, { id });
+          const component = React.createElement(reviewsRenderBundle.default, { id });
           const markup = ReactDom.renderToString(component);
 
           const result = ssrTemplate({ id, markup });
@@ -105,18 +109,35 @@ const server = http.createServer((req, res) => {
     redisClient.getAsync(redisKey)
       .then((redisVal) => {
         if (redisVal === null) {
-          fs.readFile(filename, (err, data) => {
-            if (err) {
-              console.log(err);
-              sendResponse(res, 404, '', '404 Not Found');
-            } else {
-              sendResponse(res, 200, mime.lookup(filename), data);
-              const encoding = mime.lookup(filename) === 'image/jpeg' ? 'base64' : 'utf8';
-              const bufferString = data.toString(encoding);
-              redisClient.set(redisKey, bufferString, 'EX', REDIS_LIFETIME); // cache for REDIS_LIFETIME secs
-            }
-            statistics.cacheMiss += 1;
-          });
+          // if a special filename, go to the component server(s) to grab bundles if necessary
+          if (Object.keys(bundleFiles).includes(reqFile)) {
+            axios.get(bundleFiles[reqFile])
+              .then((response) => {
+                // console.log(response, 'axios response');
+                // const jsonString = JSON.stringify(response.data);
+                sendResponse(res, 200, 'application/javascript', response.data);
+                redisClient.set(redisKey, response.data, 'EX', REDIS_LIFETIME); // cache for REDIS_LIFETIME secs
+              })
+              .catch((error) => {
+                console.log(error, 'Error');
+                const errCode = error.response ? error.response.status : 500;
+                const errMsg = error.response ? error.response.statusText : 'Internal Server Error';
+                sendResponse(res, errCode, '', errMsg);
+              });
+          } else {
+            fs.readFile(filename, (err, data) => {
+              if (err) {
+                console.log(err);
+                sendResponse(res, 404, '', '404 Not Found');
+              } else {
+                sendResponse(res, 200, mime.lookup(filename), data);
+                const encoding = mime.lookup(filename) === 'image/jpeg' ? 'base64' : 'utf8';
+                const bufferString = data.toString(encoding);
+                redisClient.set(redisKey, bufferString, 'EX', REDIS_LIFETIME); // cache for REDIS_LIFETIME secs
+              }
+            });
+          }
+          statistics.cacheMiss += 1;
         } else {
           const returnData = mime.lookup(filename) === 'image/jpeg' ? new Buffer(redisVal, 'base64') : redisVal;
           sendResponse(res, 200, mime.lookup(filename), returnData);
