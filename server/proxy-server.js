@@ -24,10 +24,14 @@ const redisClient = redis.createClient({ host: process.env.REDIS_HOST });
 
 const URLs = {
   reviews: process.env.REVIEWS_URL,
+  abouts: process.env.SUMMARY_URL,
+  menu: process.env.MENU_URL,
 };
 
 const bundleFiles = {
   'bundle-reviews.js': `${URLs.reviews}/bundle-reviews.js`,
+  'bundle-summary.js': `${URLs.abouts}/bundle.js`,
+  'bundle-menu.js': `${URLs.menu}/bundle.js`,
 };
 
 const statistics = {
@@ -55,21 +59,36 @@ const server = http.createServer((req, res) => {
     sendResponse(res, 404, '', '404 Not Found');
   } else if (req.url.startsWith('/restaurants/')) {
     // handle ajax call for restaurant reviews
-    const [, , id, component] = req.url.split('/');
+    const [, , id, component, mealType, filterTag] = req.url.split('/');
     statistics.lookupCount[id] = statistics.lookupCount[id] ? statistics.lookupCount[id] + 1 : 1;
     // console.log(`GET ${component} to ${URLs.reviews}/restaurants/${id}/reviews`);
-    const redisKey = `reviews:${id}`;
+    let redisKey;
+    if (component === 'menu') {
+      redisKey = `menu-${mealType}-${filterTag ? filterTag : 'none' }:${id}`;
+    } else {
+      redisKey = `${component}:${id}`;
+    }
     redisClient.getAsync(redisKey)
       .then((redisVal) => {
         if (redisVal === null) {
-          axios.get(`${URLs.reviews}/restaurants/${id}/reviews`)
+          let url;
+          if (component === 'menu') {
+            url = filterTag
+              ? `${URLs.menu}/restaurants/${id}/menu/${mealType}/${filterTag}`
+              : `${URLs.menu}/restaurants/${id}/menu/${mealType}`;
+          } else {
+            url = `${URLs[component]}/restaurants/${id}/${component}`;
+          }
+          // console.log('incoming:', req.url)
+          // console.log('  => fwd:', url);
+          axios.get(url)
             .then((response) => {
               const jsonString = JSON.stringify(response.data);
               sendResponse(res, 200, 'application/json', jsonString);
               redisClient.set(redisKey, jsonString, 'EX', REDIS_LIFETIME); // cache for REDIS_LIFETIME secs
             })
             .catch((error) => {
-              console.log(error, 'Error');
+              console.log(error.message, 'Error');
               const errCode = error.response ? error.response.status : 500;
               const errMsg = error.response ? error.response.statusText : 'Internal Server Error';
               sendResponse(res, errCode, '', errMsg);
