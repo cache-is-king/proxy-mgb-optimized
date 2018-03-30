@@ -24,24 +24,28 @@
   <!-- <script type="text/javascript" src="http://silverspoon-reservations.us-west-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
   <!-- <script type="text/javascript" src="http://silverspoon-menu.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
   <script type="text/javascript" src="bundle-reviews.js"></script>
+  <script type="text/javascript" src="bundle-summary.js"></script>
+  <script type="text/javascript" src="bundle-menu.js"></script>
   <script>  
-  // ReactDOM.render(
-  //   React.createElement(SummaryView, { id: 305 }, null),
-  //   document.getElementById('about')
-  // );
+  var randomInt = Math.floor(Math.random() * 1e6);
+
+  ReactDOM.render(
+    React.createElement(SummaryView, { id: randomInt }, null),
+    document.getElementById('about')
+  );
 
   // ReactDOM.render(
   //   React.createElement(Reservation, { id: 305 }, null),
   //   document.getElementById('reservations')
   // );
 
-  // ReactDOM.render(
-  //   React.createElement(MenuView, { id: 305 }, null),
-  //   document.getElementById('menu')
-  // );
+  ReactDOM.render(
+    React.createElement(MenuView, { id: randomInt }, null),
+    document.getElementById('menu')
+  );
 
   ReactDOM.render(
-    React.createElement(App, { id: 305 }, null),
+    React.createElement(App, { id: randomInt }, null),
     document.getElementById('reviews')
   );
   </script>

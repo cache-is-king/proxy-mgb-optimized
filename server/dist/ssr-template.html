@@ -25,21 +25,24 @@
   <!-- <script type="text/javascript" src="http://silverspoon-reservations.us-west-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
   <!-- <script type="text/javascript" src="http://silverspoon-menu.us-east-2.elasticbeanstalk.com/bundle-prod.js"></script> -->
   <script type="text/javascript" src="bundle-reviews.js"></script>
-  <script>  
-  // ReactDOM.render(
-  //   React.createElement(SummaryView, { id: <%= id %> }, null),
-  //   document.getElementById('about')
-  // );
+  <script type="text/javascript" src="bundle-summary.js"></script>
+  <script type="text/javascript" src="bundle-menu.js"></script>
+
+  <script>
+  ReactDOM.render(
+    React.createElement(SummaryView, { id: <%= id %> }, null),
+    document.getElementById('about')
+  );
 
   // ReactDOM.render(
   //   React.createElement(Reservation, { id: <%= id %> }, null),
   //   document.getElementById('reservations')
   // );
 
-  // ReactDOM.render(
-  //   React.createElement(MenuView, { id: <%= id %> }, null),
-  //   document.getElementById('menu')
-  // );
+  ReactDOM.render(
+    React.createElement(MenuView, { id: <%= id %> }, null),
+    document.getElementById('menu')
+  );
 
   ReactDOM.hydrate(
     React.createElement(App, { id: <%= id %> }, null),
